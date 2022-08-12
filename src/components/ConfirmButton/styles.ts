@@ -1,20 +1,20 @@
-import styled from 'styled-components/native';
-import { PropsWithChildren } from 'react';
 import { RectButton, RectButtonProps } from 'react-native-gesture-handler';
 import { RFValue } from 'react-native-responsive-fontsize';
+import styled from 'styled-components/native';
 
-interface ButtonProps extends PropsWithChildren<RectButtonProps>{
+interface ConfirmButtonProps extends RectButtonProps {
   color?: string;
 }
 
-export const Container = styled(RectButton)<ButtonProps>`
-  width: 100%;
-
-  padding: 19px;
-  align-items: center;
+export const Container = styled(RectButton)<ConfirmButtonProps>`
+  width: 80px;
+  height: 56px;
+  
   justify-content: center;
+  align-items: center;
 
-  background-color: ${({ color }) => color};
+  background-color: ${({ theme, color }) => 
+  color ? color : theme.colors.shape_dark};
 `;
 
 export const Title = styled.Text`
