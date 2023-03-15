@@ -1,30 +1,19 @@
-import React from 'react'
 import { useNavigation, useRoute } from '@react-navigation/native';
+import React from 'react';
 
+import { Accessory } from '../../components/Accessory';
 import { BackButton } from '../../components/BackButton';
 import { ImageSlider } from '../../components/ImageSlider';
-import { Accessory } from '../../components/Accessory';
 
 import { getAccessoryIcon } from '../../utils/getAccessoryIcon';
 
-import { 
-  Container,
-  Header,
-  CarImages,
-  Content,
-  Details,
-  Description,
-  Brand,
-  Name,
-  Rent,
-  Period,
-  Price, 
-  About,
-  Accessories,
-  Footer
-} from './styles';
 import { Button } from '../../components/Button';
 import { CarDTO } from '../../dtos/CarDTO';
+import {
+  About,
+  Accessories, Brand, CarImages, Container, Content, Description, Details, Footer, Header, Name, Period,
+  Price, Rent
+} from './styles';
 
 interface Params {
   car: CarDTO;
@@ -33,7 +22,7 @@ interface Params {
 export function CarDetails() {
   const navigation = useNavigation<any>()
   const route = useRoute()
-  const car = route.params as CarDTO
+  const { car } = route.params as Params
 
   function handleConfirmRental() {
     navigation.navigate('Scheduling')
@@ -66,7 +55,7 @@ export function CarDetails() {
 
         <Accessories>
           { 
-            car.accessories.map(accessory => (
+            car?.accessories.map(accessory => (
               <Accessory 
                 key={accessory.type}
                 name={accessory.name} 
