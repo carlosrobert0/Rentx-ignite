@@ -1,87 +1,106 @@
-import React from 'react'
-import { Feather } from '@expo/vector-icons'
+import { Feather } from '@expo/vector-icons';
+import React, { useEffect, useState } from 'react';
+import { Alert } from 'react-native';
 
+import { Accessory } from '../../components/Accessory';
 import { BackButton } from '../../components/BackButton';
 import { ImageSlider } from '../../components/ImageSlider';
-import { Accessory } from '../../components/Accessory';
 
-import speedSvg from '../../assets/speed.svg'
-import accelerationSvg from '../../assets/acceleration.svg'
-import forceSvg from '../../assets/force.svg'
-import gasolineSvg from '../../assets/gasoline.svg'
-import exchangeSvg from '../../assets/exchange.svg'
-import peopleSvg from '../../assets/people.svg'
-
-import {
-  Container,
-  Header,
-  CarImages,
-  Content,
-  Details,
-  Description,
-  Brand,
-  Name,
-  Rent,
-  Period,
-  Price,
-  Accessories,
-  RentalPeriod,
-  CalendarIcon,
-  DateInfo,
-  DateTitle,
-  DateValue,
-  RentalPrice,
-  RentalPriceLabel,
-  RentalPriceDetails,
-  RentalPriceQuota,
-  RentalPriceTotal,
-  Footer
-} from './styles';
-import { Button } from '../../components/Button';
-import { useTheme } from 'styled-components';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { addDays, format } from 'date-fns';
 import { RFValue } from 'react-native-responsive-fontsize';
-import { useNavigation } from '@react-navigation/native';
+import { useTheme } from 'styled-components';
+import { Button } from '../../components/Button';
+import { CarDTO } from '../../dtos/CarDTO';
+import { api } from '../../services/api';
+import { getAccessoryIcon } from '../../utils/getAccessoryIcon';
+import {
+  Accessories, Brand, CalendarIcon, CarImages, Container, Content, DateInfo,
+  DateTitle, DateValue, Description, Details, Footer, Header, Name, Period,
+  Price, Rent, RentalPeriod, RentalPrice, RentalPriceDetails, RentalPriceLabel,
+  RentalPriceQuota, RentalPriceTotal
+} from './styles';
+
+interface Params {
+  car: CarDTO;
+  dates: string[];
+}
+
+interface RentalPeriod {
+  start: string;
+  end: string;
+}
 
 export function SchedulingDetails() {
+  const [rentalPeriod, setRentalPeriod] = useState<RentalPeriod>({} as RentalPeriod)
+
   const theme = useTheme()
   const navigation = useNavigation<any>()
+  const route = useRoute()
+  const { car, dates } = route.params as Params
 
-  function handleSchedulingComplete() {
-    navigation.navigate('SchedulingComplete')
+  const rentalTotal = Number(dates.length * car.rent.price)
+
+  async function handleConfirmRental() {
+    const schedulesByCar = await api.get(`/schedules_bycars/${car.id}`)
+
+    const unavailable_dates = [
+      ...schedulesByCar.data.unavailable_dates,
+      ...dates,
+    ]
+
+    api.put(`/schedules_bycars/${car.id}`, {
+      id: car.id,
+      unavailable_dates
+    })
+    .then(() => navigation.navigate('SchedulingComplete'))
+    .catch(() => Alert.alert('Não foi possível confirmar o agendamento.'))
   }
+
+  function handleGoBack() {
+    navigation.goBack()
+  }
+
+  useEffect(() => {
+    setRentalPeriod({
+      start: format(addDays(new Date(dates[0]), 1), 'dd/MM/yyyy'),
+      end: format(addDays(new Date(dates[dates.length - 1]), 1), 'dd/MM/yyyy'),
+    })
+  }, [])
 
   return (
     <Container>
       <Header>
-        <BackButton onPress={() => navigation.goBack()} />
+        <BackButton onPress={handleGoBack} />
       </Header>
 
       <CarImages>
         <ImageSlider
-          imagesUrl={['https://w7.pngwing.com/pngs/701/44/png-transparent-subaru-impreza-car-jaguar-subaru-xv-mazda-car-compact-car-sedan-car.png']}
+          imagesUrl={car.photos}
         />
       </CarImages>
 
       <Content>
         <Details>
           <Description>
-            <Brand>Lamborghini</Brand>
-            <Name>Huracan</Name>
+            <Brand>{car.brand}</Brand>
+            <Name>{car.name}</Name>
           </Description>
 
           <Rent>
-            <Period>Ao dia</Period>
-            <Price>R$ 580</Price>
+            <Period>{car.rent.period}</Period>
+            <Price>R$ {car.rent.price}</Price>
           </Rent>
         </Details>
 
         <Accessories>
-          <Accessory name="380Km/h" icon={speedSvg} />
-          <Accessory name="3.2s" icon={accelerationSvg} />
-          <Accessory name="800 HP" icon={forceSvg} />
-          <Accessory name="Gasolina" icon={gasolineSvg} />
-          <Accessory name="Auto" icon={exchangeSvg} />
-          <Accessory name="2 Pessoas" icon={peopleSvg} />
+          {car.accessories.map(accessory => (
+            <Accessory 
+              key={accessory.type}
+              name={accessory.name}
+              icon={getAccessoryIcon(accessory.type)} 
+            />
+          ))}
         </Accessories>
 
         <RentalPeriod>
@@ -95,7 +114,7 @@ export function SchedulingDetails() {
 
           <DateInfo>
             <DateTitle>DE</DateTitle>
-            <DateValue>18/06/2021</DateValue>
+            <DateValue>{rentalPeriod.start}</DateValue>
           </DateInfo>
 
           <Feather
@@ -105,22 +124,26 @@ export function SchedulingDetails() {
           />
 
           <DateInfo>
-            <DateTitle>ATE</DateTitle>
-            <DateValue>18/06/2021</DateValue>
+            <DateTitle>ATÉ</DateTitle>
+            <DateValue>{rentalPeriod.end}</DateValue>
           </DateInfo>
         </RentalPeriod>
 
         <RentalPrice>
           <RentalPriceLabel>TOTAL</RentalPriceLabel>
           <RentalPriceDetails>
-            <RentalPriceQuota>R$ 580 x3 diárias</RentalPriceQuota>
-            <RentalPriceTotal>R$ 2.900</RentalPriceTotal>
+            <RentalPriceQuota>{`R$ ${car.rent.price} x${dates.length} diárias`}</RentalPriceQuota>
+            <RentalPriceTotal>R$ {rentalTotal}</RentalPriceTotal>
           </RentalPriceDetails>
         </RentalPrice>
       </Content>
 
       <Footer>
-        <Button title="Alugar agora" color={theme.colors.success} onPress={handleSchedulingComplete} />
+        <Button 
+          title="Alugar agora" 
+          color={theme.colors.success} 
+          onPress={handleConfirmRental} 
+        />
       </Footer>
     </Container>
   );
