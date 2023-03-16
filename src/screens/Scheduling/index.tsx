@@ -31,7 +31,6 @@ interface Params {
 }
 
 export function Scheduling(){
-  const [loading, setLoading] = useState(false)
   const [lastSelectedDate, setLastSelectedDate] = useState<DayProps>({} as DayProps)
   const [markedDates, setMarkedDates] = useState<MarkedDateProps>({} as MarkedDateProps)
   const [rentalPeriod, setRentalPeriod] = useState<RentalPeriod>({} as RentalPeriod)
