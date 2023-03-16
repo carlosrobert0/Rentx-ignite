@@ -16,7 +16,7 @@ export const Content = styled.View`
   justify-content: center;
   align-items: center;
 
-  padding-bottom: 80px;
+  padding-bottom: 60px;
 `
 
 export const Title = styled.Text`

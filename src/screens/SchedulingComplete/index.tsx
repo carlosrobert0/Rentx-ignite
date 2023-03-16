@@ -1,18 +1,15 @@
-import React from 'react';
 import { useNavigation } from '@react-navigation/native';
+import React from 'react';
 import { StatusBar, useWindowDimensions } from 'react-native';
 
-import LogoSvg from '../../assets/logo_background_gray.svg'
-import DoneSvg from '../../assets/done.svg'
+import DoneSvg from '../../assets/done.svg';
+import LogoSvg from '../../assets/logo_background_gray.svg';
 
+import { ConfirmButton } from '../../components/ConfirmButton';
 import {
   Container,
-  Content,
-  Title,
-  Message,
-  Footer
+  Content, Footer, Message, Title
 } from './styles';
-import { ConfirmButton } from '../../components/ConfirmButton';
 
 export function SchedulingComplete(){
   const { width } = useWindowDimensions()
