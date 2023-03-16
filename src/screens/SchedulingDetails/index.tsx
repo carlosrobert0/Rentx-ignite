@@ -1,6 +1,6 @@
 import { Feather } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
-import { Alert } from 'react-native';
+import { Alert, StatusBar } from 'react-native';
 
 import { Accessory } from '../../components/Accessory';
 import { BackButton } from '../../components/BackButton';
@@ -82,6 +82,11 @@ export function SchedulingDetails() {
 
   return (
     <Container>
+      <StatusBar
+        barStyle="dark-content"
+        translucent
+        backgroundColor="transparent"
+      />
       <Header>
         <BackButton onPress={handleGoBack} />
       </Header>

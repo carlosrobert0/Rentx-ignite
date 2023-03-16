@@ -7,6 +7,7 @@ import { ImageSlider } from '../../components/ImageSlider';
 
 import { getAccessoryIcon } from '../../utils/getAccessoryIcon';
 
+import { StatusBar } from 'react-native';
 import { Button } from '../../components/Button';
 import { CarDTO } from '../../dtos/CarDTO';
 import {
@@ -34,13 +35,18 @@ export function CarDetails() {
 
   return (
     <Container>
+      <StatusBar
+        barStyle="dark-content"
+        translucent
+        backgroundColor="transparent"
+      />
       <Header>
         <BackButton onPress={handleGoBack} />
       </Header>
 
       <CarImages>
-        <ImageSlider 
-          imagesUrl={car.photos} 
+        <ImageSlider
+          imagesUrl={car.photos}
         />
       </CarImages>
 
@@ -58,12 +64,12 @@ export function CarDetails() {
         </Details>
 
         <Accessories>
-          { 
+          {
             car?.accessories.map(accessory => (
-              <Accessory 
+              <Accessory
                 key={accessory.type}
-                name={accessory.name} 
-                icon={getAccessoryIcon(accessory.type)} 
+                name={accessory.name}
+                icon={getAccessoryIcon(accessory.type)}
               />
             ))
           }
