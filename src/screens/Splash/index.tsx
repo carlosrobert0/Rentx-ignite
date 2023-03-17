@@ -1,12 +1,38 @@
-import { Text } from 'react-native'
+import { Button, StyleSheet } from 'react-native'
+
+import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated'
 import {
   Container
 } from './styles'
 
 export function Splash() {
+  const animation = useSharedValue(0)
+
+  const animatedStyles = useAnimatedStyle(() => {
+    return {
+      transform: [
+        { translateX: animation.value }
+      ]
+    }
+  })
+
+  function handleAnimationPosition() {
+    animation.value = Math.random() * 500
+  }
+
   return (
     <Container>
-      <Text>Splash Screen</Text>
+      <Animated.View style={[ styles.box, animatedStyles ]} />
+
+      <Button title="Mover" onPress={handleAnimationPosition} />
     </Container>
   )
 }
+
+const styles = StyleSheet.create({
+  box: {
+    width: 100,
+    height: 100,
+    backgroundColor: 'red'
+  }
+})
