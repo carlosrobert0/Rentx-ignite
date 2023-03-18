@@ -80,7 +80,10 @@ export function MyCars() {
       </Header>
 
       {
-        loading ? <Load /> :
+        loading ? 
+        <Load /> 
+        // <LoadAnimation />
+        :
           <Content>
             <Appointments>
               <AppointmentsTitle>Agendamentos feitos</AppointmentsTitle>

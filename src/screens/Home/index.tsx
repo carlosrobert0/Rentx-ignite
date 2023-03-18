@@ -9,7 +9,6 @@ import { CarDTO } from '../../dtos/CarDTO';
 import { api } from '../../services/api';
 
 import { Car } from '../../components/Car';
-import { Load } from '../../components/Load';
 
 import { PanGestureHandler, RectButton } from 'react-native-gesture-handler';
 import Animated, {
@@ -19,6 +18,7 @@ import Animated, {
   withSpring
 } from 'react-native-reanimated';
 import { useTheme } from 'styled-components';
+import { Load } from '../../components/Load';
 import {
   CarList, Container,
   Header,
@@ -111,7 +111,11 @@ export function Home() {
         </HeaderContent>
       </Header>
 
-      {loading ? <Load /> :
+      {
+        loading ? 
+        // <LoadAnimation /> 
+        <Load />
+        :
         <CarList
           data={cars}
           keyExtractor={item => item.id}
