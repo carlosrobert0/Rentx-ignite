@@ -1,13 +1,11 @@
-import React from 'react'
-import 'react-native-gesture-handler';
 import * as SplashScreen from 'expo-splash-screen'
+import React from 'react'
 
 import { ThemeProvider } from 'styled-components'
 
 import {
-  useFonts,
   Inter_400Regular,
-  Inter_500Medium
+  Inter_500Medium, useFonts
 } from '@expo-google-fonts/inter'
 
 import {
@@ -16,8 +14,8 @@ import {
   Archivo_600SemiBold
 } from '@expo-google-fonts/archivo'
 
+import { Routes } from './src/routes'
 import theme from './src/styles/theme'
-import { Routes } from './src/routes';
 
 export default function App() {
   SplashScreen.preventAutoHideAsync();
