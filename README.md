@@ -21,6 +21,10 @@ Para lidar com os gestos do usuário, utilizei a lib React Native Gesture Handle
 * React Native Reanimated - para animaçoes
 * Axios
 
+## :wrench: VIdeos
+![2023-03-19 23-26-44](https://user-images.githubusercontent.com/45858897/226235476-4dadad33-b472-4e31-abc1-026b807a60a9.gif)
+
+
 ## :rocket: Rodando o projeto
 Para rodar o repositório é necessário clonar o mesmo, dar o seguinte comando para iniciar o projeto:
 ```
