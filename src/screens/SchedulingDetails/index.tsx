@@ -7,7 +7,7 @@ import { BackButton } from '../../components/BackButton';
 import { ImageSlider } from '../../components/ImageSlider';
 
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { addDays, format } from 'date-fns';
+import { format } from 'date-fns';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useTheme } from 'styled-components';
 import { Button } from '../../components/Button';
@@ -54,8 +54,8 @@ export function SchedulingDetails() {
     await api.post('schedules_byuser', {
       user_id: 1,
       car,
-      startDate: format(addDays(new Date(dates[0]), 1), 'dd/MM/yyyy'),
-      endDate: format(addDays(new Date(dates[dates.length - 1]), 1), 'dd/MM/yyyy'),
+      startDate: format(new Date(dates[0]), 'dd/MM/yyyy'),
+      endDate: format(new Date(dates[dates.length - 1]), 'dd/MM/yyyy'),
     })
 
     api.put(`/schedules_bycars/${car.id}`, {
@@ -75,8 +75,8 @@ export function SchedulingDetails() {
 
   useEffect(() => {
     setRentalPeriod({
-      start: format(addDays(new Date(dates[0]), 1), 'dd/MM/yyyy'),
-      end: format(addDays(new Date(dates[dates.length - 1]), 1), 'dd/MM/yyyy'),
+      start: format(new Date(dates[0]), 'dd/MM/yyyy'),
+      end: format(new Date(dates[dates.length - 1]), 'dd/MM/yyyy'),
     })
   }, [])
 

@@ -5,7 +5,7 @@ import { BackButton } from '../../components/BackButton';
 import ArrowSvg from '../../assets/arrow.svg';
 
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { addDays, format } from 'date-fns';
+import { format } from 'date-fns';
 import { StatusBar } from 'react-native';
 import { Button } from '../../components/Button';
 import {
@@ -68,8 +68,8 @@ export function Scheduling(){
     const endDate = Object.keys(interval)[Object.keys(interval).length - 1]
 
     setRentalPeriod({
-      startFormatted: format(addDays(new Date(firstDate), 1), 'dd/MM/yyyy'),
-      endFormatted: format(addDays(new Date(endDate), 1), 'dd/MM/yyyy'),
+      startFormatted: format(new Date(firstDate), 'dd/MM/yyyy'),
+      endFormatted: format(new Date(endDate), 'dd/MM/yyyy'),
     })
   }
 
